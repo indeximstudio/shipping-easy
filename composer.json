@@ -1,0 +1,7 @@
+{
+  "name": "indeximstudio/shipping-easy",
+  "description": "Shipping easy api",
+  "require": {
+    "php": "^7.2"
+  }
+}
