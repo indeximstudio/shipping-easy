@@ -1,15 +1,15 @@
 <?php
 
-class ShippingEasy_Object
+namespace Indeximstudio\ShippingEasy;
+
+class Object
 {
-  public function request($meth, $path, $params=null, $payload = null, $apiKey = null, $apiSecret = null)
-  {
-    $requestor = new ShippingEasy_ApiRequestor();
+    public function request($meth, $path, $params = null, $payload = null, $apiKey = null, $apiSecret = null)
+    {
+        $requester = new ApiRequester();
 
-    $res =  $requestor->request($meth, $path, $params, $payload, $apiKey, $apiSecret);
-
-    return $requestor->request($meth, $path, $params, $payload, $apiKey, $apiSecret);
-  }
+        return $requester->request($meth, $path, $params, $payload, $apiKey, $apiSecret);
+    }
 
 }
 

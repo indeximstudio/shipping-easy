@@ -1,6 +1,8 @@
 <?php
 
-class ShippingEasy_Order extends ShippingEasy_Object
+namespace Indeximstudio\ShippingEasy;
+
+class Order extends Object
 {
     public function __construct($store_api_key = null, $values = null)
     {

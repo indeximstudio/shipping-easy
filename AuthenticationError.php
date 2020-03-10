@@ -1,5 +1,7 @@
 <?php
 
-class ShippingEasy_AuthenticationError extends ShippingEasy_Error
+namespace Indeximstudio\ShippingEasy;
+
+class AuthenticationError extends Error
 {
 }
