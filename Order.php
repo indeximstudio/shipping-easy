@@ -2,7 +2,7 @@
 
 namespace Indeximstudio\ShippingEasy;
 
-class Order extends Object
+class Order extends SEObject
 {
     public function __construct($store_api_key = null, $values = null)
     {

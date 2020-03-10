@@ -2,7 +2,7 @@
 
 namespace Indeximstudio\ShippingEasy;
 
-class Cancellation extends Object
+class Cancellation extends SEObject
 {
 
     public function __construct($store_api_key, $external_order_identifier)

@@ -2,7 +2,7 @@
 
 namespace Indeximstudio\ShippingEasy;
 
-class PartnerAccount extends Object
+class PartnerAccount extends SEObject
 {
     public function create($data = array())
     {

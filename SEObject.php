@@ -2,7 +2,7 @@
 
 namespace Indeximstudio\ShippingEasy;
 
-class Object
+class SEObject
 {
     public function request($meth, $path, $params = null, $payload = null, $apiKey = null, $apiSecret = null)
     {

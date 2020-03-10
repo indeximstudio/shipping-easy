@@ -2,7 +2,7 @@
 
 namespace Indeximstudio\ShippingEasy;
 
-class PartnerSession extends Object
+class PartnerSession extends SEObject
 {
     public function create($data = array())
     {
