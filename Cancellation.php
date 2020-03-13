@@ -2,18 +2,37 @@
 
 namespace Indeximstudio\ShippingEasy;
 
-class Cancellation extends SEObject
-{
+use Indeximstudio\ShippingEasy\Exceptions\ApiConnectionException;
+use Indeximstudio\ShippingEasy\Exceptions\CurlConnectionException;
+use Indeximstudio\ShippingEasy\Exceptions\FailAuthenticationException;
+use Indeximstudio\ShippingEasy\Exceptions\InvalidRequestException;
+use Indeximstudio\ShippingEasy\Exceptions\InvalidResponseException;
 
-    public function __construct($store_api_key, $external_order_identifier)
+class Cancellation extends ApiRequester
+{
+    private $storeApiKey;
+    private $externalOrderIdentifier;
+
+    public function __construct($storeApiKey, $externalOrderIdentifier)
     {
-        $this->store_api_key = $store_api_key;
-        $this->external_order_identifier = $external_order_identifier;
+        $this->storeApiKey = $storeApiKey;
+        $this->externalOrderIdentifier = $externalOrderIdentifier;
     }
 
+    /**
+     * @return mixed
+     * @throws ApiConnectionException
+     * @throws CurlConnectionException
+     * @throws FailAuthenticationException
+     * @throws InvalidRequestException
+     * @throws InvalidResponseException
+     */
     public function create()
     {
-        return $this->request("post", "/api/stores/$this->store_api_key/orders/$this->external_order_identifier/cancellations");
+        return $this->request(
+            'post',
+            "/api/stores/{$this->storeApiKey}/orders/{$this->externalOrderIdentifier}/cancellations"
+        );
     }
 
 }

@@ -2,46 +2,134 @@
 
 namespace Indeximstudio\ShippingEasy;
 
-class Order extends SEObject
+use Indeximstudio\ShippingEasy\Exceptions\ApiConnectionException;
+use Indeximstudio\ShippingEasy\Exceptions\CurlConnectionException;
+use Indeximstudio\ShippingEasy\Exceptions\FailAuthenticationException;
+use Indeximstudio\ShippingEasy\Exceptions\InvalidRequestException;
+use Indeximstudio\ShippingEasy\Exceptions\InvalidResponseException;
+
+class Order extends ApiRequester
 {
-    public function __construct($store_api_key = null, $values = null)
+    private $storeApiKey;
+    private $values;
+
+    public function __construct($storeApiKey = null, $values = null)
     {
-        $this->store_api_key = $store_api_key;
+        $this->storeApiKey = $storeApiKey;
         $this->values = $values;
     }
 
+    /**
+     * @return mixed
+     * @throws ApiConnectionException
+     * @throws CurlConnectionException
+     * @throws FailAuthenticationException
+     * @throws InvalidRequestException
+     * @throws InvalidResponseException
+     */
     public function create()
     {
-        return $this->request("post", "/api/stores/$this->store_api_key/orders", null, array("order" => $this->values));
+        return $this->request(
+            'post',
+            "/api/stores/{$this->storeApiKey}/orders",
+            null,
+            ['order' => $this->values]
+        );
     }
 
-    public function updateRecipient($external_order_id, $recipient_data)
+    /**
+     * @param $externalOrderId
+     * @param $recipientData
+     * @return mixed
+     * @throws ApiConnectionException
+     * @throws CurlConnectionException
+     * @throws FailAuthenticationException
+     * @throws InvalidRequestException
+     * @throws InvalidResponseException
+     */
+    public function updateRecipient($externalOrderId, $recipientData)
     {
-        return $this->request("put", "/api/stores/$this->store_api_key/orders/$external_order_id/recipient", null, array("recipient" => $recipient_data));
+        return $this->request(
+            'put',
+            "/api/stores/{$this->storeApiKey}/orders/{$externalOrderId}/recipient",
+            null,
+            ['recipient' => $recipientData]
+        );
     }
 
-    public function updateStatus($external_order_id, $new_status)
+    /**
+     * @param $externalOrderId
+     * @param $newStatus
+     * @return mixed
+     * @throws ApiConnectionException
+     * @throws CurlConnectionException
+     * @throws FailAuthenticationException
+     * @throws InvalidRequestException
+     * @throws InvalidResponseException
+     */
+    public function updateStatus($externalOrderId, $newStatus)
     {
-        return $this->request("put", "/api/stores/$this->store_api_key/orders/$external_order_id/status", null, array("order" => array("order_status" => $new_status)));
+        return $this->request(
+            'put',
+            "/api/stores/{$this->storeApiKey}/orders/{$externalOrderId}/status",
+            null,
+            ['order' => ['order_status' => $newStatus]]
+        );
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     * @throws ApiConnectionException
+     * @throws CurlConnectionException
+     * @throws FailAuthenticationException
+     * @throws InvalidRequestException
+     * @throws InvalidResponseException
+     */
     public function find($id)
     {
-        return $this->request("get", "/api/orders/$id");
+        return $this->request('get', "/api/orders/{$id}");
     }
 
-    public function findByStore($external_order_id)
+    /**
+     * @param $externalOrderId
+     * @return mixed
+     * @throws ApiConnectionException
+     * @throws CurlConnectionException
+     * @throws FailAuthenticationException
+     * @throws InvalidRequestException
+     * @throws InvalidResponseException
+     */
+    public function findByStore($externalOrderId)
     {
-        return $this->request("get", "/api/stores/$this->store_api_key/orders/$external_order_id");
+        return $this->request('get', "/api/stores/{$this->storeApiKey}/orders/{$externalOrderId}");
     }
 
-    public function findAllByStore($params = array())
+    /**
+     * @param array $params
+     * @return mixed
+     * @throws ApiConnectionException
+     * @throws CurlConnectionException
+     * @throws FailAuthenticationException
+     * @throws InvalidRequestException
+     * @throws InvalidResponseException
+     */
+    public function findAllByStore($params = [])
     {
-        return $this->request("get", "/api/stores/$this->store_api_key/orders", $params);
+        return $this->request('get', "/api/stores/{$this->storeApiKey}/orders", $params);
     }
 
-    public function findAll($params = array())
+    /**
+     * @param array $params
+     * @return mixed
+     * @throws ApiConnectionException
+     * @throws CurlConnectionException
+     * @throws FailAuthenticationException
+     * @throws InvalidRequestException
+     * @throws InvalidResponseException
+     */
+    public function findAll($params = [])
     {
-        return $this->request("get", "/api/orders", $params);
+        return $this->request('get', '/api/orders', $params);
     }
 }

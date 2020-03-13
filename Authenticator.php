@@ -4,31 +4,43 @@ namespace Indeximstudio\ShippingEasy;
 
 class Authenticator
 {
+    /**
+     * Instantiates a new authenticator object.
+     *
+     * http_method - The method of the http request. E.g. "post" or "get".
+     * path - The path of the request's uri. E.g. "/orders/callback"
+     * params - An associative array of the request's query string parameters. E.g. array("api_signature" => "asdsadsad", "api_timestamp" => "1234567899")
+     * json_body - The request body as a JSON string.
+     * api_secret - The ShippingEasy API secret for the store. Defaults to the global configuration if set.
+     */
 
-    # Instantiates a new authenticator object.
-    #
-    # http_method - The method of the http request. E.g. "post" or "get".
-    # path - The path of the request's uri. E.g. "/orders/callback"
-    # params - An associative array of the request's query string parameters. E.g. array("api_signature" => "asdsadsad", "api_timestamp" => "1234567899")
-    # json_body - The request body as a JSON string.
-    # api_secret - The ShippingEasy API secret for the store. Defaults to the global configuration if set.
-    #
-    public function __construct($http_method = null, $path = null, $params = null, $json_body = null, $api_secret = null)
+    private $suppliedSignatureString;
+    private $expectedSignature;
+
+    /**
+     * Authenticator constructor.
+     * @param $httpMethod
+     * @param $path
+     * @param $params
+     * @param $jsonBody
+     * @param $apiSecret
+     */
+    public function __construct($httpMethod = null, $path = null, $params = null, $jsonBody = null, $apiSecret = null)
     {
-        $api_secret = isset($api_secret) ? $api_secret : ShippingEasy::$apiSecret;
-        $this->supplied_signature_string = $params["api_signature"];
-        unset($params["api_signature"]);
-        $this->expected_signature = new Signature($api_secret, $http_method, $path, $params, $json_body);
+        $apiSecret = isset($apiSecret) ? $apiSecret : ShippingEasy::$apiSecret;
+        $this->suppliedSignatureString = $params['api_signature'];
+        unset($params['api_signature']);
+        $this->expectedSignature = new Signature($apiSecret, $httpMethod, $path, $params, $jsonBody);
     }
 
     public function getExpectedSignature()
     {
-        return $this->expected_signature;
+        return $this->expectedSignature;
     }
 
     public function getSuppliedSignatureString()
     {
-        return $this->supplied_signature_string;
+        return $this->suppliedSignatureString;
     }
 
     public function isAuthenticated()
