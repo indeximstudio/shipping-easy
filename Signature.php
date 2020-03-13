@@ -59,7 +59,7 @@ class Signature
             $parts[] = http_build_query($this->getParams());
         }
 
-        if ($this->getJsonBody() != null) {
+        if ($this->getJsonBody() != 'null') {
             $parts[] = $this->getJsonBody();
         }
 
