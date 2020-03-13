@@ -4,29 +4,35 @@ namespace Indeximstudio\ShippingEasy;
 
 class Signature
 {
-    public function __construct($api_secret = null, $http_method = null, $path = null, $params = null, $json_body = null)
+    private $apiSecret;
+    private $httpMethod;
+    private $path;
+    private $params;
+    private $jsonBody;
+
+    public function __construct($apiSecret = null, $httpMethod = null, $path = null, $params = null, $jsonBody = null)
     {
-        $this->api_secret = $api_secret;
-        $this->http_method = strtoupper($http_method);
+        $this->apiSecret = $apiSecret;
+        $this->httpMethod = strtoupper($httpMethod);
         $this->path = $path;
         ksort($params);
         $this->params = $params;
 
-        if (is_string($json_body)) {
-            $this->json_body = str_replace("\/", "/", $json_body);
+        if (is_string($jsonBody)) {
+            $this->jsonBody = str_replace("\/", '/', $jsonBody);
         } else {
-            $this->json_body = json_encode($json_body);
+            $this->jsonBody = json_encode($jsonBody);
         }
     }
 
     public function getApiSecret()
     {
-        return $this->api_secret;
+        return $this->apiSecret;
     }
 
     public function getHttpMethod()
     {
-        return $this->http_method;
+        return $this->httpMethod;
     }
 
     public function getPath()
@@ -41,7 +47,7 @@ class Signature
 
     public function getJsonBody()
     {
-        return $this->json_body;
+        return $this->jsonBody;
     }
 
     public function plaintext()
@@ -49,13 +55,15 @@ class Signature
         $parts = array($this->getHttpMethod());
         $parts[] = $this->getPath();
 
-        if (!empty($this->getParams()))
+        if (!empty($this->getParams())) {
             $parts[] = http_build_query($this->getParams());
+        }
 
-        if ($this->getJsonBody() != "null")
+        if ($this->getJsonBody() != null) {
             $parts[] = $this->getJsonBody();
+        }
 
-        return implode("&", $parts);
+        return implode('&', $parts);
     }
 
     public function encrypted()
@@ -67,5 +75,4 @@ class Signature
     {
         return $this->encrypted() == $signature;
     }
-
 }
